@@ -1,0 +1,44 @@
+# --- Datos y manejo general ---
+pandas
+numpy
+requests
+openpyxl
+
+# --- Geoespacial ---
+geopandas
+rasterio
+shapely
+folium
+pydeck
+
+# --- Google Earth Engine ---
+earthengine-api
+
+# --- Visión por computadora ---
+torch
+torchvision
+segmentation-models-pytorch
+transformers
+timm
+huggingface_hub
+segment-anything
+
+# --- Inferencia causal ---
+econml
+dowhy
+scikit-learn
+
+# --- Optimización ---
+scipy
+pulp
+
+# --- Aplicación ---
+streamlit
+plotly
+
+# --- LLM ---
+anthropic
+
+# --- Jupyter ---
+ipykernel
+jupyter

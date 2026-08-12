@@ -1,0 +1,30 @@
+# Entorno virtual
+.venv/
+venv/
+
+# Datos (pesados o sensibles, no van al repo)
+data/raw/*
+data/clean/*
+!data/raw/.gitkeep
+!data/clean/.gitkeep
+
+# Modelos entrenados y outputs pesados
+outputs/models/
+outputs/*.pt
+outputs/*.pth
+outputs/*.h5
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Variables de entorno / API keys
+.env
+
+# Sistema
+.DS_Store
+Thumbs.db
