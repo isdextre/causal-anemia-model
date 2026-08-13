@@ -1,16 +1,7 @@
-# Entorno virtual
-.venv/
-venv/
 
 # Datos crudos (pesados, no van al repo)
 data/raw/*
 !data/raw/.gitkeep
-
-# Modelos entrenados y outputs pesados
-outputs/models/
-outputs/*.pt
-outputs/*.pth
-outputs/*.h5
 
 # Python
 __pycache__/
