@@ -2,11 +2,9 @@
 .venv/
 venv/
 
-# Datos (pesados o sensibles, no van al repo)
+# Datos crudos (pesados, no van al repo)
 data/raw/*
-data/clean/*
 !data/raw/.gitkeep
-!data/clean/.gitkeep
 
 # Modelos entrenados y outputs pesados
 outputs/models/
