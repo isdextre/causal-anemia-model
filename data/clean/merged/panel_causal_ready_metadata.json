@@ -1,0 +1,151 @@
+{
+  "generado_en": "2026-08-13T22:01:09.142179+00:00",
+  "fuente": "data\\clean\\merged\\panel_distrital_clean.csv",
+  "ventana_temporal": {
+    "anio_min": 2021,
+    "anio_max": 2024
+  },
+  "filas_fuente_en_ventana": 7556,
+  "filtro_ninos_evaluados": {
+    "umbral_minimo": 10,
+    "filas_excluidas": 959
+  },
+  "outliers_administrativos_gasto": {
+    "percentil_usado": 0.99,
+    "umbral_soles_percapita": 2650606.3657706636,
+    "filas_excluidas": 66,
+    "distritos_afectados": [
+      "ACOBAMBA",
+      "AIJA",
+      "ANTABAMBA",
+      "AREQUIPA",
+      "ASCOPE",
+      "BELLAVISTA",
+      "CALANA",
+      "CASTROVIRREYNA",
+      "CHACHAPOYAS",
+      "ELEAZAR GUZMAN BARRON",
+      "ILABAYA",
+      "ITE",
+      "JESUS MARIA",
+      "LA PECA",
+      "LA PERLA",
+      "LIMA",
+      "LOCUMBA",
+      "MATUCANA",
+      "MIRAFLORES",
+      "PARURO",
+      "PUQUIO",
+      "RECUAY",
+      "RIMAC",
+      "SAN BORJA",
+      "SAN ISIDRO",
+      "SAN JUAN DE SIGUAS",
+      "SANTIAGO DE CHUCO",
+      "TORATA",
+      "VILCABAMBA",
+      "YANACANCHA",
+      "YARABAMBA",
+      "YAUYOS"
+    ]
+  },
+  "filas_sin_prevalencia_anemia_excluidas": 0,
+  "contexto_territorial_incompleto_en_origen": {
+    "filas_excluidas": 23,
+    "distritos_afectados": [
+      "AHUAYRO",
+      "BOQUERON",
+      "CIELO PUNCO",
+      "COCHABAMBA",
+      "HUIPOCA",
+      "LAMBRAS",
+      "MANITEA",
+      "MEGANTONI",
+      "ORONCCOY",
+      "PUEBLO NUEVO",
+      "SANTA LUCIA",
+      "SANTIAGO DE TUCUMA",
+      "UNION ASHÁNINKA"
+    ]
+  },
+  "imputacion_renamu": {
+    "personal_total": {
+      "metodo": "mediana",
+      "valor": 18.0
+    },
+    "programa_anemia": {
+      "metodo": "constante",
+      "valor": 0
+    },
+    "centro_salud_municipal": {
+      "metodo": "constante",
+      "valor": 0
+    }
+  },
+  "shape_final": {
+    "filas": 6508,
+    "columnas": 38
+  },
+  "distritos_unicos_final": 1777,
+  "anios_final": [
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "roles_de_variables": {
+    "Y": [
+      "ninos_evaluados",
+      "ninos_con_anemia",
+      "prevalencia_anemia"
+    ],
+    "T": [
+      "gasto_total",
+      "gasto_anemia_pan",
+      "gasto_total_percapita",
+      "gasto_anemia_pan_percapita",
+      "log_gasto_total_percapita",
+      "log_gasto_anemia_pan_percapita"
+    ],
+    "X": [
+      "pct_cultivo",
+      "pct_construido",
+      "pct_desnudo",
+      "pct_agua_visible",
+      "n_edificios",
+      "area_construida_m2",
+      "confianza_media",
+      "area_distrito_km2",
+      "densidad_edificios_km2",
+      "elevacion_media",
+      "pendiente_media",
+      "pct_agua_permanente",
+      "pct_agua_estacional",
+      "altitude",
+      "superficie",
+      "pob_densidad_2020"
+    ],
+    "W": [
+      "personal_total",
+      "personal_total_missing",
+      "programa_anemia",
+      "programa_anemia_missing",
+      "centro_salud_municipal",
+      "centro_salud_municipal_missing",
+      "anio",
+      "macroregion_inei",
+      "macroregion_minsa"
+    ],
+    "llave": [
+      "ubigeo",
+      "anio"
+    ]
+  },
+  "limitaciones_declaradas": [
+    "prevalencia_anemia viene de registro administrativo (SIEN), no de un censo; sesgo de selección de quién se tamiza todavía no corregido con ENDES.",
+    "El ubigeo del gasto (SIAF) identifica la unidad ejecutora, no necesariamente el distrito de intervención real; se trató el caso extremo (outliers administrativos) pero el proxy sigue siendo imperfecto para el resto de distritos.",
+    "gasto_anemia_pan solo cubre el Programa Articulado Nutricional (0001), no salud materno-neonatal, saneamiento rural, Cuna Más, Qali Warma, JUNTOS ni incentivos municipales.",
+    "region no es costa/sierra/selva (es una copia de departamento); no se usó como variable de control por esa razón.",
+    "La imputación de programa_anemia/centro_salud_municipal con 0 ante dato faltante es una asunción conservadora explícita, no un hecho verificado."
+  ]
+}
