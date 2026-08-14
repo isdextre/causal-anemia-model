@@ -1,0 +1,244 @@
+{
+  "generado_en": "2026-08-13T22:36:50.107802+00:00",
+  "fuente": "data/clean/merged/panel_distrital_clean.csv",
+  "principio_de_diseno": "Ningún distrito se elimina del archivo final; los problemas de dato se corrigen o se declaran con banderas.",
+  "ventana_temporal": {
+    "anio_min": 2021,
+    "anio_max": 2025
+  },
+  "shape_final": {
+    "filas": 9445,
+    "columnas": 46
+  },
+  "distritos_unicos_final": 1889,
+  "anios_final": [
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "banderas_de_calidad": {
+    "muestra_pequena": 950,
+    "outlier_administrativo": 93,
+    "y_no_disponible": 146,
+    "t_no_disponible": 146,
+    "umbral_outlier_administrativo_soles_percapita": 4079925.042019897
+  },
+  "imputacion_renamu": {
+    "personal_total": {
+      "metodo": "mediana",
+      "valor": 18.0
+    },
+    "programa_anemia": {
+      "metodo": "constante",
+      "valor": 0
+    },
+    "centro_salud_municipal": {
+      "metodo": "constante",
+      "valor": 0
+    }
+  },
+  "distritos_con_geo_investigado_manualmente": {
+    "030612": {
+      "altitude": 2049,
+      "superficie": 29.55,
+      "poblacion": 1227,
+      "confianza": "baja",
+      "nota": "deperu.com/distrito.pe; población promediada por discrepancia (1407 vs 1047)"
+    },
+    "050413": {
+      "altitude": 3844,
+      "superficie": 94.01,
+      "poblacion": 230,
+      "confianza": "media",
+      "nota": "deperu.com y distrito.pe coinciden en población y superficie"
+    },
+    "050511": {
+      "altitude": 3557,
+      "superficie": null,
+      "poblacion": 984,
+      "confianza": "baja",
+      "nota": "altitud promediada por discrepancia (3394 vs 3719); superficie no encontrada en ninguna fuente"
+    },
+    "050512": {
+      "altitude": 690,
+      "superficie": 38.75,
+      "poblacion": 2038,
+      "confianza": "media",
+      "nota": "deperu.com y distrito.pe coinciden"
+    },
+    "050513": {
+      "altitude": 667,
+      "superficie": 112.07,
+      "poblacion": 2294,
+      "confianza": "media",
+      "nota": "deperu.com y distrito.pe coinciden"
+    },
+    "050514": {
+      "altitude": null,
+      "superficie": 99.71,
+      "poblacion": 1902,
+      "confianza": "media",
+      "nota": "altitud no encontrada (riesgo de confundir con Ninabamba de Cajamarca, se descartó esa fuente)"
+    },
+    "050515": {
+      "altitude": 2467,
+      "superficie": 96.041,
+      "poblacion": 1488,
+      "confianza": "media",
+      "nota": "deperu.com y distrito.pe coinciden"
+    },
+    "080914": {
+      "altitude": 303,
+      "superficie": 9507.84,
+      "poblacion": 7427,
+      "confianza": "alta",
+      "nota": "Infogob/JNE, fuente oficial"
+    },
+    "080915": {
+      "altitude": 671,
+      "superficie": 2942.3,
+      "poblacion": 5683,
+      "confianza": "baja",
+      "nota": "fuente única no oficial (distrito.pe), no se pudo corroborar con fuente gubernamental"
+    },
+    "080916": {
+      "altitude": 662,
+      "superficie": null,
+      "poblacion": 2288,
+      "confianza": "baja",
+      "nota": "fuente única no oficial; superficie no encontrada en ninguna fuente"
+    },
+    "080917": {
+      "altitude": 656,
+      "superficie": 658.26,
+      "poblacion": 3666,
+      "confianza": "media",
+      "nota": "deperu.com y distrito.pe"
+    },
+    "080918": {
+      "altitude": 529,
+      "superficie": 309.96,
+      "poblacion": 6072,
+      "confianza": "media",
+      "nota": "deperu.com"
+    },
+    "090723": {
+      "altitude": 3538,
+      "superficie": null,
+      "poblacion": 1411,
+      "confianza": "baja",
+      "nota": "fuente única no oficial; superficie no encontrada"
+    },
+    "090724": {
+      "altitude": 2575,
+      "superficie": null,
+      "poblacion": 1493,
+      "confianza": "baja",
+      "nota": "fuente única no oficial; superficie no encontrada"
+    },
+    "090725": {
+      "altitude": 2684,
+      "superficie": null,
+      "poblacion": 1648,
+      "confianza": "baja",
+      "nota": "fuente única no oficial (verificado que corresponde a Huancavelica, no al homónimo de Cajamarca); superficie no encontrada"
+    },
+    "100609": {
+      "altitude": null,
+      "superficie": 323.55,
+      "poblacion": 6000,
+      "confianza": "baja",
+      "nota": "altitud no encontrada; población aproximada sin año censal claro"
+    },
+    "221006": {
+      "altitude": 507,
+      "superficie": null,
+      "poblacion": 6469,
+      "confianza": "baja",
+      "nota": "superficie no encontrada; población promediada por discrepancia (5848 vs 7090)"
+    },
+    "250306": {
+      "altitude": 304,
+      "superficie": 575.39,
+      "poblacion": 4604,
+      "confianza": "alta",
+      "nota": "Gobierno Regional de Ucayali (IDER), citando Censo INEI 2017"
+    },
+    "250307": {
+      "altitude": 397,
+      "superficie": null,
+      "poblacion": 3881,
+      "confianza": "alta",
+      "nota": "Gobierno Regional de Ucayali (IDER), citando Censo INEI 2017; superficie no encontrada"
+    }
+  },
+  "roles_de_variables": {
+    "Y": [
+      "ninos_evaluados",
+      "ninos_con_anemia",
+      "prevalencia_anemia",
+      "y_no_disponible"
+    ],
+    "T": [
+      "gasto_total",
+      "gasto_anemia_pan",
+      "gasto_total_percapita",
+      "gasto_anemia_pan_percapita",
+      "log_gasto_total_percapita",
+      "log_gasto_anemia_pan_percapita",
+      "t_no_disponible"
+    ],
+    "X": [
+      "pct_cultivo",
+      "pct_construido",
+      "pct_desnudo",
+      "pct_agua_visible",
+      "n_edificios",
+      "area_construida_m2",
+      "confianza_media",
+      "area_distrito_km2",
+      "densidad_edificios_km2",
+      "elevacion_media",
+      "pendiente_media",
+      "pct_agua_permanente",
+      "pct_agua_estacional",
+      "altitude",
+      "superficie",
+      "pob_densidad_2020"
+    ],
+    "W": [
+      "personal_total",
+      "personal_total_missing",
+      "programa_anemia",
+      "programa_anemia_missing",
+      "centro_salud_municipal",
+      "centro_salud_municipal_missing",
+      "anio",
+      "macroregion_inei",
+      "macroregion_minsa"
+    ],
+    "banderas_calidad": [
+      "muestra_pequena",
+      "outlier_administrativo",
+      "altitude_fuente",
+      "superficie_fuente",
+      "pob_densidad_2020_fuente",
+      "geo_investigacion_confianza"
+    ],
+    "llave": [
+      "ubigeo",
+      "anio"
+    ]
+  },
+  "limitaciones_declaradas": [
+    "prevalencia_anemia viene de registro administrativo (SIEN), no de un censo; sesgo de selección todavía no corregido con ENDES.",
+    "El ubigeo del gasto (SIAF) identifica la unidad ejecutora, no necesariamente el distrito de intervención real; los casos extremos quedan marcados en outlier_administrativo, pero el proxy sigue siendo imperfecto para el resto de distritos.",
+    "gasto_anemia_pan solo cubre el Programa Articulado Nutricional (0001).",
+    "region no es costa/sierra/selva (es una copia de departamento); no se usó como control.",
+    "2 ubigeos (130112, 180107) siguen fuera del panel — no tienen geometría en absoluto en geobase_distrital.gpkg, un problema distinto (y más grande) al de los 19 distritos con geo investigado en este notebook.",
+    "Los 19 distritos con altitude/superficie/pob_densidad_2020 investigados manualmente dependen, en su mayoría, de fuentes no oficiales (agregadores web) — el nivel de confianza de cada uno queda declarado en geo_investigacion_confianza, y no debe tratarse con la misma certeza que el dato censal original.",
+    "pob_densidad_2020 de los 19 distritos investigados no es densidad censal 2020 real — es población investigada (de años variables, 2017-2024) dividida entre la superficie final."
+  ]
+}
