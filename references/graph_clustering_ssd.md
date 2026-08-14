@@ -21,7 +21,7 @@ Agrupar los distritos del Perú en clusters homogéneos por año usando represen
 
 | Archivo | Uso |
 |---|---|
-| `data/clean/merged/panel_distrital_final.csv` | Features de nodos |
+| `data/clean/merged/panel_distrital_clean.csv` | Features de nodos |
 | `notebooks/03_causal_model/cghciv.geojson` | Polígonos distritales → aristas |
 
 ---
@@ -46,9 +46,43 @@ Los valores nulos se imputan con la mediana del año.
 
 ### Aristas — Contigüidad Queen
 
-Se usa `libpysal.weights.Queen.from_dataframe(gdf)` sobre el GeoJSON de polígonos distritales. Dos distritos son vecinos si comparten al menos un vértice (contigüidad Queen). Las aristas son **no dirigidas y no ponderadas**.
+Una arista conecta dos distritos si sus **polígonos comparten cualquier punto de frontera**: un lado completo o incluso un solo vértice. Esto se llama contigüidad Queen (por analogía al movimiento de la reina en ajedrez, que se mueve en todas las direcciones).
 
-Para distritos sin vecinos (islas), se agrega una auto-arista como fallback.
+```
+Rook (solo lados):          Queen (lados + vértices):
+
+  [ A ][ B ]                  [ A ][ B ]
+  [ C ][ D ]                  [ C ][ D ]
+
+  A-B, A-C, B-D, C-D          A-B, A-C, A-D, B-C, B-D, C-D
+```
+
+**¿Por qué Queen y no k-NN?**
+
+- k-NN conecta los k distritos más cercanos por coordenada de centroide, ignorando la forma real del polígono. Puede conectar distritos que no se tocan (separados por un río, montaña, etc.) y dejar de conectar distritos que sí son vecinos si uno tiene un centroide inusualmente alejado.
+- Queen usa la geometría real de los polígonos del GeoJSON, así que dos distritos son vecinos si y solo si **físicamente comparten frontera**, lo cual es la relación espacial más natural para datos distritales de salud.
+
+**Propiedades del grafo resultante:**
+
+| Propiedad | Valor |
+|---|---|
+| Tipo | No dirigido, no ponderado |
+| Nodos | ~1,889 distritos |
+| Grado promedio | ~5–7 vecinos por distrito |
+| Islas (sin vecinos) | Muy pocas; se les agrega auto-arista como fallback |
+
+**Implementación:**
+
+```python
+import libpysal
+from torch_geometric.utils import from_scipy_sparse_matrix
+
+w = libpysal.weights.Queen.from_dataframe(gdf)  # GeoDataFrame con polígonos
+sp = w.sparse                                    # scipy sparse matrix (N×N)
+edge_index, _ = from_scipy_sparse_matrix(sp)    # formato PyTorch Geometric
+```
+
+La matriz de adyacencia `sp` es simétrica: si el distrito A es vecino de B, entonces B es vecino de A. `edge_index` tiene forma `[2, num_aristas]` con los pares de nodos conectados.
 
 > Alternativa: k-NN espacial (k=6) sobre lat/lon para nodos sin cobertura en el GeoJSON.
 
@@ -140,7 +174,7 @@ Una vez entrenado el modelo, se extraen los embeddings `Z ∈ ℝ^{N×d}` y se a
 ## Pipeline
 
 ```
-panel_distrital_final.csv
+panel_distrital_clean.csv
         │
         ▼
 [1] Construcción del grafo por año
