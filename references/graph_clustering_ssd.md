@@ -8,12 +8,13 @@ Agrupar los distritos del Perú en clusters homogéneos por año usando represen
 
 ## Unidad de análisis
 
-| Dimensión   | Valor                                      |
-|-------------|--------------------------------------------|
-| Nodo        | Un distrito (ubigeo)                       |
-| Grafo       | Uno por año (2020–2025)                    |
-| Nodos/grafo | ~1,889                                     |
-| Aristas     | Contigüidad espacial Queen (geojson)       |
+| Dimensión   | Valor                                              |
+|-------------|----------------------------------------------------|
+| Nodo        | Un distrito-año (ubigeo × año)                     |
+| Grafo       | **Un solo grafo temporal** (todos los años juntos) |
+| Nodos total | ~1,889 × 6 años = ~11,334                          |
+| Aristas espaciales | Contigüidad Queen repetida por año          |
+| Aristas temporales | Mismo distrito entre años consecutivos     |
 
 ---
 
@@ -28,9 +29,15 @@ Agrupar los distritos del Perú en clusters homogéneos por año usando represen
 
 ## Construcción del grafo
 
+### Motivación: grafo temporal único
+
+Entrenar un modelo independiente por año produce **label switching**: K-Means asigna etiquetas `0, 1, 2...` de forma arbitraria en cada ejecución, por lo que el "cluster 2" del 2020 no corresponde al "cluster 2" del 2021. Comparar clusters entre años es engañoso.
+
+La solución es entrenar **un solo VGAE sobre todos los años simultáneamente**. Como todos los embeddings vienen del mismo espacio latente, los clusters son comparables entre años por construcción.
+
 ### Nodos
 
-Cada nodo `i` representa un distrito en un año dado. Sus features son las columnas numéricas del panel (normalizadas con `StandardScaler`):
+Cada nodo `i` representa un distrito-año (ubigeo, año). Sus features son las columnas numéricas del panel (normalizadas con `StandardScaler`):
 
 ```
 prevalencia_anemia, gasto_total, gasto_anemia_pan,
@@ -44,9 +51,11 @@ pct_agua_permanente, pct_agua_estacional
 
 Los valores nulos se imputan con la mediana del año.
 
-### Aristas — Contigüidad Queen
+### Aristas
 
-Una arista conecta dos distritos si sus **polígonos comparten cualquier punto de frontera**: un lado completo o incluso un solo vértice. Esto se llama contigüidad Queen (por analogía al movimiento de la reina en ajedrez, que se mueve en todas las direcciones).
+El grafo tiene dos tipos de aristas:
+
+**Espaciales (Queen contiguity):** una arista conecta dos nodos del mismo año si sus **polígonos comparten cualquier punto de frontera**: un lado completo o incluso un solo vértice. Esto se llama contigüidad Queen (por analogía al movimiento de la reina en ajedrez, que se mueve en todas las direcciones).
 
 ```
 Rook (solo lados):          Queen (lados + vértices):
@@ -83,6 +92,27 @@ edge_index, _ = from_scipy_sparse_matrix(sp)    # formato PyTorch Geometric
 ```
 
 La matriz de adyacencia `sp` es simétrica: si el distrito A es vecino de B, entonces B es vecino de A. `edge_index` tiene forma `[2, num_aristas]` con los pares de nodos conectados.
+
+**Temporales:** el nodo (ubigeo, año t) se conecta con (ubigeo, año t+1). Esto permite que el modelo aprenda que el mismo distrito en años consecutivos debe tener embeddings similares, ancla la representación en el tiempo y es la clave para que los clusters sean comparables entre años.
+
+```
+Estructura del grafo temporal:
+
+  [Lima_2020] ── [Huancayo_2020] ── ...  ← aristas espaciales (Queen)
+       │                │
+       │                │               ← aristas temporales (mismo distrito)
+       │                │
+  [Lima_2021] ── [Huancayo_2021] ── ...
+       │                │
+  [Lima_2022] ── [Huancayo_2022] ── ...
+      ...
+```
+
+| Tipo de arista | Cantidad aprox. |
+|---|---|
+| Espaciales (Queen × 6 años) | 6 × 5,535 = 33,210 |
+| Temporales (1,889 × 5 transiciones) | 9,445 |
+| **Total** | **~42,655** |
 
 > Alternativa: k-NN espacial (k=6) sobre lat/lon para nodos sin cobertura en el GeoJSON.
 
@@ -174,26 +204,27 @@ Una vez entrenado el modelo, se extraen los embeddings `Z ∈ ℝ^{N×d}` y se a
 ## Pipeline
 
 ```
-panel_distrital_clean.csv
+panel_distrital_clean.csv + cghciv.geojson
         │
         ▼
-[1] Construcción del grafo por año
-    - Nodos: features normalizadas
-    - Aristas: Queen contiguity (geojson)
+[1] Construcción del grafo temporal único
+    - Nodos: (ubigeo × año), features normalizadas
+    - Aristas espaciales: Queen contiguity por año
+    - Aristas temporales: mismo distrito entre años consecutivos
         │
         ▼
-[2] Entrenamiento VGAE / DGI
-    - Por año o sobre todos los años concatenados
+[2] Entrenamiento VGAE — un solo modelo sobre todo el grafo
         │
         ▼
-[3] Extracción de embeddings Z
+[3] Extracción de embeddings Z ∈ ℝ^{11334×32}
         │
         ▼
-[4] K-Means → asignación de clusters
+[4] K-Means global → asignación de clusters
+    - Clusters comparables entre años (mismo espacio latente)
         │
         ▼
 [5] Evaluación + visualización
-    - Silhouette, mapa distrital, UMAP
+    - Silhouette, mapa distrital por año, UMAP
 ```
 
 ---
