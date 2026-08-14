@@ -36,6 +36,11 @@ pulp
 streamlit
 plotly
 
+# --- Grafos ---
+torch-geometric
+libpysal
+umap-learn
+
 # --- LLM ---
 anthropic
 
